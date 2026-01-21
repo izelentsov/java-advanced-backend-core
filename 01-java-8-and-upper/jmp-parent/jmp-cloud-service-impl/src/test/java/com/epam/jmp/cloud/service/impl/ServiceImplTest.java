@@ -9,13 +9,13 @@ import com.epam.jmp.dto.CardNumber;
 import com.epam.jmp.dto.DebitBankCard;
 import com.epam.jmp.dto.Subscription;
 import com.epam.jmp.dto.User;
+import com.epam.jmp.service.SubscriptionNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
+
 public class ServiceImplTest {
-
-
 
     @Test
     public void subscribesDebitCard() {
@@ -64,6 +64,54 @@ public class ServiceImplTest {
 
 
     @Test
+    public void returnsEmptySubscriptionOnUnknownCard() {
+        var service = new ServiceImpl();
+        var knownCardNumber = new CardNumber("1111222233334444");
+        service.subscribe(
+                new DebitBankCard(
+                        knownCardNumber,
+                        new User("Eve", "Davis", LocalDate.now().minusYears(22)),
+                        5.0));
+
+        var unknownCardNumber = new CardNumber("0000111122223333");
+
+        Optional<Subscription> maybeSub =
+                service.getSubscriptionByBankCardNumber(unknownCardNumber);
+
+        assertNotNull(maybeSub);
+
+        // Task 10
+        assertThrowsExactly(
+                SubscriptionNotFoundException.class,
+                () -> maybeSub.orElseThrow(SubscriptionNotFoundException::new),
+                "Expected SubscriptionNotFoundException for unknown card number");
+    }
+
+
+    @Test
+    public void returnsSubscriptionsWithCondition() {
+        var service = new ServiceImpl();
+        var user = new User("Frank", "Miller", LocalDate.now().minusYears(45));
+        var cardNumber1 = new CardNumber("2222333344445555");
+        var cardNumber2 = new CardNumber("6666777788889999");
+        var card1 = new DebitBankCard(cardNumber1, user, 20.0);
+        var card2 = new DebitBankCard(cardNumber2, user, 0.0);
+
+        service.subscribe(card1);
+        service.subscribe(card2);
+
+        var allSubs = service.getAllSubscriptionsByCondition(_ -> true);
+        var noSubs = service.getAllSubscriptionsByCondition(_ -> false);
+        var specificSubs = service.getAllSubscriptionsByCondition(sub -> sub.bankcard().equals(cardNumber1));
+
+        assertEquals(2, allSubs.size());
+        assertEquals(0, noSubs.size());
+        assertEquals(1, specificSubs.size());
+        assertEquals(cardNumber1, specificSubs.getFirst().bankcard());
+    }
+
+
+    @Test
     public void registersCardUsers() {
         var service = new ServiceImpl();
         var user1 = new User("Charlie", "Brown", LocalDate.now().minusYears(40));
@@ -71,6 +119,8 @@ public class ServiceImplTest {
         var card1 = new DebitBankCard(new CardNumber("1111222233334444"), user1, 5.0);
         var card2 = new DebitBankCard(new CardNumber("5555666677778888"), user1, 15.0);
         var card3 = new DebitBankCard(new CardNumber("9999000011112222"), user2, 0.0);
+
+        assertEquals(0, service.getAllUsers().size());
 
         service.subscribe(card1);
         service.subscribe(card2);

@@ -43,7 +43,7 @@ class BankImplTest {
 
     private static void checkCardNumber(BankCard card) {
         String number = card.number().number();
-        assertEquals(16, number.length());
+        assertEquals(BankImpl.CARD_NUMBER_LENGTH, number.length());
         assertTrue(number.chars().allMatch(Character::isDigit));
     }
 }

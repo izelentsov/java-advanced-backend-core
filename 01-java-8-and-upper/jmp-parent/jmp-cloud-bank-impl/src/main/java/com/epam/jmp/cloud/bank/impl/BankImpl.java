@@ -14,6 +14,9 @@ import com.epam.jmp.bank.Bank;
 
 public class BankImpl implements Bank {
 
+    public static final int CARD_NUMBER_LENGTH = 16;
+
+
     private final Random rand = new Random();
 
     @Override
@@ -24,6 +27,8 @@ public class BankImpl implements Bank {
     }
 
 
+    // Task 12
+    @FunctionalInterface
     private interface CardFactory {
         BankCard create(CardNumber number, User user, double initial);
 
@@ -37,7 +42,7 @@ public class BankImpl implements Bank {
 
     private CardNumber generateCardNumber() {
         final String number = rand.ints(0, 10)
-                .limit(16)
+                .limit(CARD_NUMBER_LENGTH)
                 .mapToObj(Integer::toString)
                 .collect(Collectors.joining());
         return new CardNumber(number);

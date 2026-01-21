@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 
 
 public class ServiceImpl implements Service {
@@ -20,6 +21,7 @@ public class ServiceImpl implements Service {
 
     private final Map<CardNumber, Subscription> subscriptions = new HashMap<>();
     private final Set<User> users = new HashSet<>();
+
 
     @Override
     public void subscribe(BankCard bankCard) {
@@ -29,9 +31,18 @@ public class ServiceImpl implements Service {
         users.add(bankCard.user());
     }
 
+
     @Override
     public Optional<Subscription> getSubscriptionByBankCardNumber(CardNumber cardNumber) {
         return Optional.ofNullable(subscriptions.get(cardNumber));
+    }
+
+
+    @Override
+    public List<Subscription> getAllSubscriptionsByCondition(Predicate<Subscription> condition) {
+        return subscriptions.values().stream()
+                .filter(condition)
+                .toList();
     }
 
     @Override
