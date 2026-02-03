@@ -1,39 +1,57 @@
 package com.epam.jmp.mod2.homework.task3;
 
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 
 public class Bus {
 
-    private final Queue<String> messages = new LinkedList<>();
+    private final Map<String, Queue<String>> messages = new HashMap<>();
     private final int maxMessages;
+    private int currentMessages = 0;
 
     public Bus(int maxMessages) {
         this.maxMessages = maxMessages;
     }
 
-    public void send(String message) throws InterruptedException {
+    public void send(String topic, String message) throws InterruptedException {
         synchronized (messages) {
-            while (messages.size() >= maxMessages) {
+            while (currentMessages >= maxMessages) {
                 System.out.println("Bus is full, producer is waiting...");
                 messages.wait();
             }
-            messages.offer(message);
+            Queue<String> queue = getQueue(topic);
+            queue.offer(message);
+            currentMessages += 1;
             messages.notifyAll();
         }
     }
 
-    public String receive() throws InterruptedException {
+    public String receive(String topic) throws InterruptedException {
         synchronized (messages) {
-            while (messages.isEmpty()) {
-                System.out.println("Bus is empty, consumer is waiting...");
+            Queue<String> queue = getQueue(topic);
+            while (queue.isEmpty()) {
+                System.out.println("Topic " + topic + " is empty, consumer is waiting... " + queue);
                 messages.wait();
+                queue = getQueue(topic);
             }
-            String msg = messages.remove();
+            String msg = queue.remove();
+            currentMessages -= 1;
+            if (queue.isEmpty()) {
+                messages.remove(topic);
+            }
             messages.notifyAll();
             return msg;
         }
+    }
+
+    private Queue<String> getQueue(String topic) {
+        return messages.computeIfAbsent(topic, _ -> {
+            System.out.println("Creating a queue for topic " + topic);
+            return new LinkedList<>();
+        });
     }
 }

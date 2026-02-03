@@ -2,6 +2,7 @@ package com.epam.jmp.mod2.homework.task4;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.stream.IntStream;
 
 /**
  * Pool that block when it has not any items or it full
@@ -18,6 +19,9 @@ public class BlockingObjectPool {
      */
     public BlockingObjectPool(int size) {
         pool = new ArrayBlockingQueue<>(size);
+        IntStream.range(0, size)
+                .mapToObj(_ -> new Object())
+                .forEach(pool::add);
     }
 
     /**

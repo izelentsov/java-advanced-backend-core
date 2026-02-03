@@ -1,6 +1,7 @@
 package com.epam.jmp.mod2.homework.task4;
 
 
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -11,53 +12,41 @@ public class BlockingObjectPoolDemo {
 
 
     static void main() throws InterruptedException {
-        final int producers = 3;
-        final int consumers = 5;
+        final int workers = 10;
 
-        try (ExecutorService exProd = Executors.newFixedThreadPool(producers);
-             ExecutorService exCons = Executors.newFixedThreadPool(consumers)) {
+        try (ExecutorService ex = Executors.newFixedThreadPool(workers)) {
+            final BlockingObjectPool pool = new BlockingObjectPool(5);
 
-            final BlockingObjectPool pool = new BlockingObjectPool(10);
+            IntStream.range(0, workers)
+                    .forEach(i -> ex.submit(() -> work(i, pool)));
 
-            IntStream.range(0, producers)
-                    .forEach(i -> exProd.submit(() -> produce(i, pool)));
-            IntStream.range(0, consumers)
-                    .forEach(i -> exCons.submit(() -> consume(i, pool)));
+            Thread.sleep(15_000L);
 
-            Thread.sleep(10_000);
-
-            exProd.shutdownNow();
-            exCons.shutdownNow();
-
-            exProd.awaitTermination(5, TimeUnit.SECONDS);
-            exCons.awaitTermination(5, TimeUnit.SECONDS);
+            System.out.println("Shutting down");
+            ex.shutdownNow();
+            ex.awaitTermination(5, TimeUnit.SECONDS);
         }
     }
 
-    private static void produce(int i, BlockingObjectPool pool) {
-        int count = 0;
+    private static void work(int i, BlockingObjectPool pool) {
+        Random r = new Random();
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                String message = "Message from producer " + i + " (" + (count++) + ")";
-                pool.put(message);
-                System.out.println("Produced: " + message);
+                System.out.println("Worker " + i + " is requesting");
+                Object obj = pool.get();
+
+                System.out.println("Worker " + i + " is working");
+                Thread.sleep(100L + r.nextLong(5000L));
+
+                System.out.println("Worker " + i + " is returning");
+                pool.put(obj);
+
+                System.out.println("Worker " + i + " is done");
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                e.printStackTrace();
+                System.out.println("Worker " + i + " is interrupted");
             }
         }
     }
 
-
-    private static void consume(int i, BlockingObjectPool pool) {
-        while (!Thread.currentThread().isInterrupted()) {
-            try {
-                Object message = pool.get();
-                System.out.println("Consumer " + i + " received: " + message);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                e.printStackTrace();
-            }
-        }
-    }
 }
