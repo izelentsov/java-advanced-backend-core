@@ -65,6 +65,8 @@
 - Open retrieved heap dump in jvisualvm
 - Identify memory leak
 
+![img/heap-jvis-dump.png](img/heap-jvis-dump.png)
+
 ![img/heap-jvis-identify.png](img/heap-jvis-identify.png)
 
 
@@ -78,8 +80,10 @@ Execute OQL in jvisualvm:
 
 - Analyze Object arrays
 ![img/heap-jvis-oql-obj-array.png](img/heap-jvis-oql-obj-array.png)
+
 - Analyze Object arrays referrers
 ![img/heap-jvis-oql-ref-obj-array.png](img/heap-jvis-oql-ref-obj-array.png)
+
 - Identify the owner of the largest ArrayList
 ![img/heap-jvis-oql-ref-array-list.png](img/heap-jvis-oql-ref-array-list.png)
 
