@@ -1,5 +1,7 @@
 # Module 3. Monitoring and Troubleshooting the Java Application
 
+[TOC]
+
 ## OutOfMemory (OOM) error troubleshooting
 ### Get OOM error
 ```
@@ -95,53 +97,46 @@ Execute OQL in jvisualvm:
 ## Deadlock troubleshooting
 ### Get deadlock
 - Execute java application that simulates deadlock:
-
 ```
     java -jar deadlock-1.0.0-SNAPSHOT.jar
 ```
 
-- Get thread dump and locate lines similar to:
+![img/deadlock-run.png](img/deadlock-run.png)
 
-```
-Found one Java-level deadlock:
-=============================
-"Thread 2":
-  waiting to lock monitor 0x000000001bf40b68 (object 0x000000076b7777c8, a java.lang.Object),
-  which is held by "Thread 1"
-"Thread 1":
-  waiting to lock monitor 0x000000001bf43608 (object 0x000000076b7777d8, a java.lang.Object),
-  which is held by "Thread 2"
+![img/deadlock-jps.png](img/deadlock-jps.png)
 
-Java stack information for the threads listed above:
-===================================================
-"Thread 2":
-        at com.epam.jmp.mat.deadlock.SimulateDeadLock.method2(SimulateDeadLock.java:44)
-        - waiting to lock <0x000000076b7777c8> (a java.lang.Object)
-        - locked <0x000000076b7777d8> (a java.lang.Object)
-        at com.epam.jmp.mat.deadlock.DeadLockMain$2.run(DeadLockMain.java:18)
-"Thread 1":
-        at com.epam.jmp.mat.deadlock.SimulateDeadLock.method1(SimulateDeadLock.java:24)
-        - waiting to lock <0x000000076b7777d8> (a java.lang.Object)
-        - locked <0x000000076b7777c8> (a java.lang.Object)
-        at com.epam.jmp.mat.deadlock.DeadLockMain$1.run(DeadLockMain.java:11)
-
-Found 1 deadlock.
-```
 
 ### Get thread dump
-1} jstack
+1. jstack
 ```
-    jstack -l <pid>
+    jstack -l 89379
 ```
-2} kill -3
+
+![img/deadlock-jstack.png](img/deadlock-jstack.png)
+
+
+1. kill -3
 ```
     kill -3 <pid>
 ```
-3} jvisualvm
+Executing the kill command:
+![img/deadlock-kill-cmd.png](img/deadlock-kill-cmd.png)
 
-4} Windows (Ctrl + Break)
+Result in the running console:
+![img/deadlock-kill-output.png](img/deadlock-kill-output.png)
 
-5} jcmd
+
+1. jvisualvm
+
+![img/deadlock-jvis-alert.png](img/deadlock-jvis-alert.png)
+
+![img/deadlock-jvis-thread-dump.png](img/deadlock-jvis-thread-dump.png)
+
+1. jcmd
 ```
     jcmd <pid> Thread.print
 ```
+
+![img/deadlock-jcmd-cmd.png](img/deadlock-jcmd-cmd.png)
+
+![img/deadlock-jcmd-output.png](img/deadlock-jcmd-output.png)
