@@ -107,7 +107,8 @@ Execute OQL in jvisualvm:
 
 
 ### Get thread dump
-1. jstack
+
+#### jstack
 ```
     jstack -l 89379
 ```
@@ -115,7 +116,7 @@ Execute OQL in jvisualvm:
 ![img/deadlock-jstack.png](img/deadlock-jstack.png)
 
 
-1. kill -3
+#### kill -3
 ```
     kill -3 <pid>
 ```
@@ -126,13 +127,14 @@ Result in the running console:
 ![img/deadlock-kill-output.png](img/deadlock-kill-output.png)
 
 
-1. jvisualvm
+#### jvisualvm
 
 ![img/deadlock-jvis-alert.png](img/deadlock-jvis-alert.png)
 
 ![img/deadlock-jvis-thread-dump.png](img/deadlock-jvis-thread-dump.png)
 
-1. jcmd
+
+#### jcmd
 ```
     jcmd <pid> Thread.print
 ```
@@ -140,3 +142,23 @@ Result in the running console:
 ![img/deadlock-jcmd-cmd.png](img/deadlock-jcmd-cmd.png)
 
 ![img/deadlock-jcmd-output.png](img/deadlock-jcmd-output.png)
+
+
+
+## Remote JVM profiling
+Using [JMX Technology](https://docs.oracle.com/javase/8/docs/technotes/guides/management/agent.html)
+
+```
+    java -jar -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=7890 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false simple-1.0.0-SNAPSHOT.jar
+```
+Connect to JVM using jconsole:
+```
+    jconsole localhost:7890
+```
+
+![img/profiling-jconsole.png](img/profiling-jconsole.png)
+
+Example of an MBean: 
+![img/profiling-jconsole-class-loaded.png](img/profiling-jconsole-class-loaded.png)
+
+
