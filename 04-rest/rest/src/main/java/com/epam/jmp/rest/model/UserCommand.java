@@ -15,7 +15,7 @@ public sealed interface UserCommand
     record UserCreateCommand(String firstName, String lastName, String location) implements UserCommand {
     }
 
-    record UserLocationUpdateCommand(long id, String newLocation) implements UserCommand{
+    record UserLocationUpdateCommand(long id, String location) implements UserCommand{
     }
 
     record UserDeleteCommand(long id) implements UserCommand {

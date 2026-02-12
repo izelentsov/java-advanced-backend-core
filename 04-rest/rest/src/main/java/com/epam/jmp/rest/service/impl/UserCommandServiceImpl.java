@@ -49,10 +49,10 @@ public class UserCommandServiceImpl implements UserCommandService {
     public void updateUserLocation(UserLocationUpdateCommand command) throws UserException {
         User user = repository.findById(command.id()).orElseThrow(
                 () -> new UserNotFoundException("User not found: " + command.id()));
-        user.setLocation(command.newLocation());
+        user.setLocation(command.location());
         try {
-            repository.save(user);
-            LOG.info("User updated: {}", user);
+            User updated = repository.save(user);
+            LOG.info("User updated: {}", updated);
         } catch (Exception e) {
             LOG.error("Failed to update user: {}", command, e);
             throw new UserCommandFailedException("Failed to update user", command, e);
