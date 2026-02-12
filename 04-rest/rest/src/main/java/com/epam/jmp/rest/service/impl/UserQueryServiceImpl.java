@@ -35,7 +35,7 @@ public class UserQueryServiceImpl implements UserQueryService {
     public User findUser(FindUserQuery query) throws UserException {
         try {
             return repository.findById(query.id())
-                    .orElseThrow(() -> new UserNotFoundException("User not found: " + query.id()));
+                    .orElseThrow(() -> new UserNotFoundException("User not found", query.id()));
         } catch (UserException e) {
             throw e;
         } catch (Exception e) {

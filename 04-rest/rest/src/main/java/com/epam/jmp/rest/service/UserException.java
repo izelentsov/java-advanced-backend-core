@@ -35,8 +35,10 @@ public class UserException extends Exception {
 
 
     public static class UserNotFoundException extends UserException {
-        public UserNotFoundException(String message) {
+        public final long userId;
+        public UserNotFoundException(String message, long userId) {
             super(message);
+            this.userId = userId;
         }
     }
 }

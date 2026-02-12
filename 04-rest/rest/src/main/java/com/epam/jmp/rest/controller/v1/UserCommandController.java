@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.epam.jmp.rest.dto.UserCreatedResponse;
 import com.epam.jmp.rest.dto.UserDeletedResponse;
+import com.epam.jmp.rest.dto.UserUpdateRequest;
 import com.epam.jmp.rest.dto.UserUpdatedResponse;
 import com.epam.jmp.rest.model.UserCommand.UserCreateCommand;
 import com.epam.jmp.rest.model.UserCommand.UserDeleteCommand;
@@ -45,22 +47,25 @@ public class UserCommandController {
     }
 
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+    @PutMapping(value = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserUpdatedResponse> updateUser(@RequestBody UserLocationUpdateCommand command)
+    public ResponseEntity<UserUpdatedResponse> updateUser(@PathVariable long id,
+                                                          @RequestBody UserUpdateRequest request)
         throws UserException {
+        UserLocationUpdateCommand command = new UserLocationUpdateCommand(id, request.location());
         userService.updateUserLocation(command);
         UserUpdatedResponse response = new UserUpdatedResponse(command.id(), Instant.now());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
-    @DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+    @DeleteMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDeletedResponse> deleteUser(@RequestBody UserDeleteCommand command)
+    public ResponseEntity<UserDeletedResponse> deleteUser(@PathVariable long id)
         throws UserException {
-        userService.deleteUser(command);
-        UserDeletedResponse response = new UserDeletedResponse(command.id(), Instant.now());
+        userService.deleteUser(new UserDeleteCommand(id));
+        UserDeletedResponse response = new UserDeletedResponse(id, Instant.now());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

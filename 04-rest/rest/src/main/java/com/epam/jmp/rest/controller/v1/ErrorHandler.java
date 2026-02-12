@@ -55,7 +55,7 @@ public class ErrorHandler {
     public ResponseEntity<UserErrorResponse> handleNotFound(UserNotFoundException e) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         Instant ts = Instant.now();
-        UserErrorResponse response = new UserErrorResponse(e.getMessage(), ts);
+        UserErrorResponse response = new UserErrorResponse(e.userId, e.getMessage(), ts);
         return new ResponseEntity<>(response, status);
     }
 

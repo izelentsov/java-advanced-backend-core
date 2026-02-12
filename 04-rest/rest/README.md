@@ -1,4 +1,6 @@
+# Running
 
+`./gradlew bootRun`
 
 # Example requests
 
@@ -22,13 +24,11 @@ curl -u testuser:pass -X GET "http://localhost:8080/v1/user?location=NY"
 ```
 5. Update user location
 ```
-curl -u testuser:pass -X PUT http://localhost:8080/v1/user \
+curl -u testuser:pass -X PUT http://localhost:8080/v1/user/1 \
     -H "Content-Type: application/json" \
-    -d '{"id":1,"location":"LA"}'
+    -d '{"location":"LA"}'
 ```    
 6. Delete user
 ```
-curl -u testuser:pass -X DELETE http://localhost:8080/v1/user \
-    -H "Content-Type: application/json" \
-    -d '{"id":1}'
+curl -u testuser:pass -X DELETE http://localhost:8080/v1/user/1
 ```

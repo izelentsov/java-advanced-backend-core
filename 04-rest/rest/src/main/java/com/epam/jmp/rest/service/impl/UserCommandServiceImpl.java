@@ -48,7 +48,7 @@ public class UserCommandServiceImpl implements UserCommandService {
     @Override
     public void updateUserLocation(UserLocationUpdateCommand command) throws UserException {
         User user = repository.findById(command.id()).orElseThrow(
-                () -> new UserNotFoundException("User not found: " + command.id()));
+                () -> new UserNotFoundException("User not found", command.id()));
         user.setLocation(command.location());
         try {
             User updated = repository.save(user);
