@@ -1,6 +1,8 @@
 target/
 files/
+build/
 .idea/
+.gradle/
 *.iml
 *~
 *#
