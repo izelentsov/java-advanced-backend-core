@@ -3,6 +3,7 @@ files/
 build/
 .idea/
 .gradle/
+.codesight/
 *.iml
 *~
 *#
