@@ -3,6 +3,13 @@ package com.epam.jmp.clean.task1;
 import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
+import com.epam.jmp.clean.task1.model.BookCheckout;
+import com.epam.jmp.clean.task1.model.BookId;
+import com.epam.jmp.clean.task1.model.UserId;
+import com.epam.jmp.clean.task1.repository.BookRegistry;
+import com.epam.jmp.clean.task1.repository.InMemoryBookRegistry;
+import com.epam.jmp.clean.task1.service.NotificationService;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;

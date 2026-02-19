@@ -3,6 +3,16 @@ package com.epam.jmp.clean.task1;
 import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
+import com.epam.jmp.clean.task1.model.BookCheckout;
+import com.epam.jmp.clean.task1.model.BookId;
+import com.epam.jmp.clean.task1.model.UserId;
+import com.epam.jmp.clean.task1.repository.BookRegistry;
+import com.epam.jmp.clean.task1.repository.InMemoryBookRegistry;
+import com.epam.jmp.clean.task1.repository.InMemoryWaitingListRegistry;
+import com.epam.jmp.clean.task1.repository.WaitingListRegistry;
+import com.epam.jmp.clean.task1.service.NotificationService;
+import com.epam.jmp.clean.task1.service.ReservationNotificationService;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -16,7 +26,7 @@ class ReservableLibrarySystemTest {
         UserId user2 = new UserId("USR2");
         UserId user3 = new UserId("USR3");
         BookRegistry registry = new InMemoryBookRegistry();
-        BookWaitingList waitingList = new BookWaitingList();
+        WaitingListRegistry waitingList = new InMemoryWaitingListRegistry();
         NotificationService notificationService = mock(NotificationService.class);
         ReservationNotificationService reservationNotificationService = mock(ReservationNotificationService.class);
         ReservableLibrarySystem library = new ReservableLibrarySystem(registry, notificationService, waitingList, reservationNotificationService);

@@ -1,7 +1,18 @@
-package com.epam.jmp.clean.task1;
+package com.epam.jmp.clean.task1.demo;
 
 
 import java.util.Optional;
+
+import com.epam.jmp.clean.task1.LibrarySystem;
+import com.epam.jmp.clean.task1.model.BookCheckout;
+import com.epam.jmp.clean.task1.model.BookId;
+import com.epam.jmp.clean.task1.model.UserId;
+import com.epam.jmp.clean.task1.repository.BookRegistry;
+import com.epam.jmp.clean.task1.repository.InMemoryBookRegistry;
+import com.epam.jmp.clean.task1.service.ConsoleNotificationService;
+import com.epam.jmp.clean.task1.service.NotificationService;
+
+
 
 public class LibrarySystemDemo {
     public static void main(String[] args) {

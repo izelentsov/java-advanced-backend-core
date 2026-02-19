@@ -1,4 +1,4 @@
-package com.epam.jmp.clean.task1;
+package com.epam.jmp.clean.task1.model;
 
 public record BookId(String value) {
     public BookId {

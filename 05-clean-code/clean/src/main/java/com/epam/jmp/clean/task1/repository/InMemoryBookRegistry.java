@@ -1,8 +1,10 @@
-package com.epam.jmp.clean.task1;
+package com.epam.jmp.clean.task1.repository;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.epam.jmp.clean.task1.model.BookId;
+import com.epam.jmp.clean.task1.model.UserId;
 
 
 public class InMemoryBookRegistry implements BookRegistry {

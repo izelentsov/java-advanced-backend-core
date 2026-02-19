@@ -2,7 +2,11 @@ package com.epam.jmp.clean.task1;
 
 import java.util.Optional;
 
-
+import com.epam.jmp.clean.task1.model.BookCheckout;
+import com.epam.jmp.clean.task1.model.BookId;
+import com.epam.jmp.clean.task1.model.UserId;
+import com.epam.jmp.clean.task1.repository.BookRegistry;
+import com.epam.jmp.clean.task1.service.NotificationService;
 
 
 public class LibrarySystem {

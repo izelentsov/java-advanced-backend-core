@@ -2,15 +2,22 @@ package com.epam.jmp.clean.task1;
 
 import java.util.Optional;
 
+import com.epam.jmp.clean.task1.model.BookCheckout;
+import com.epam.jmp.clean.task1.model.BookId;
+import com.epam.jmp.clean.task1.model.UserId;
+import com.epam.jmp.clean.task1.repository.BookRegistry;
+import com.epam.jmp.clean.task1.repository.WaitingListRegistry;
+import com.epam.jmp.clean.task1.service.NotificationService;
+import com.epam.jmp.clean.task1.service.ReservationNotificationService;
 
 
 public class ReservableLibrarySystem extends LibrarySystem {
-    private final BookWaitingList waitingList;
+    private final WaitingListRegistry waitingList;
     private final ReservationNotificationService reservationNotificationService;
 
     public ReservableLibrarySystem(BookRegistry bookRegistry,
                                    NotificationService notificationService,
-                                   BookWaitingList waitingList,
+                                   WaitingListRegistry waitingList,
                                    ReservationNotificationService reservationNotificationService) {
         super(bookRegistry, notificationService);
         this.waitingList = waitingList;
