@@ -3,11 +3,17 @@ package com.epam.jmp.clean.task1;
 import java.util.HashMap;
 import java.util.Map;
 
-public class InMemoryBookStorage implements BookStorage {
+
+
+public class InMemoryBookRegistry implements BookRegistry {
     private final Map<BookId, UserId> bookRegistry = new HashMap<>();
 
+
+    public InMemoryBookRegistry() {
+    }
+
     @Override
-    public boolean isBookAvailable(BookId bookId) {
+    public boolean isBookCheckedOut(BookId bookId) {
         return bookRegistry.containsKey(bookId);
     }
 

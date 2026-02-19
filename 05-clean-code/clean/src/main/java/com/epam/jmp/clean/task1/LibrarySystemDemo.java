@@ -6,7 +6,7 @@ import java.util.Optional;
 public class LibrarySystemDemo {
     public static void main(String[] args) {
         NotificationService notificationService = new ConsoleNotificationService();
-        BookStorage bookStorage = new InMemoryBookStorage();
+        BookRegistry bookStorage = new InMemoryBookRegistry();
         LibrarySystem library = new LibrarySystem(bookStorage, notificationService);
         BookId bookId = new BookId("BK001");
         UserId userId = new UserId("USR001");

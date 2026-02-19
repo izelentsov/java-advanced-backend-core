@@ -6,32 +6,33 @@ import java.util.Optional;
 
 
 public class LibrarySystem {
-    private final BookStorage bookStorage;
+    private final BookRegistry bookRegistry;
     private final NotificationService notificationService;
 
-    public LibrarySystem(BookStorage bookStorage, NotificationService notificationService) {
-        this.bookStorage = bookStorage;
+    public LibrarySystem(BookRegistry bookRegistry, NotificationService notificationService) {
+        this.bookRegistry = bookRegistry;
         this.notificationService = notificationService;
     }
 
     public Optional<BookCheckout> checkOutBook(BookId bookId, UserId userId) {
-        if (bookStorage.isBookAvailable(bookId)) {
-            bookStorage.checkOutBook(bookId, userId);
-            notificationService.notify("Book checked out to " + userId);
-            return Optional.of(new BookCheckout(bookId, userId));
-        } else {
-            notificationService.notify("Book is currently unavailable.");
+        if (bookRegistry.isBookCheckedOut(bookId)) {
+            notificationService.bookCheckoutFailed(bookId, userId);
             return Optional.empty();
+        } else {
+            bookRegistry.checkOutBook(bookId, userId);
+            notificationService.bookCheckedOut(bookId, userId);
+            return Optional.of(new BookCheckout(bookId, userId));
         }
     }
 
-    public void returnBook(BookCheckout checkout) {
-        if (bookStorage.isBookAvailable(checkout.bookId())) {
-            notificationService.notify("This book was not checked out.");
+    public boolean returnBook(BookCheckout checkout) {
+        if (bookRegistry.isBookCheckedOut(checkout.bookId())) {
+            bookRegistry.returnBook(checkout.bookId());
+            notificationService.bookReturned(checkout.bookId());
+            return true;
         } else {
-            // In the future, checks/validations can be added here using checkout metadata
-            bookStorage.returnBook(checkout.bookId());
-            notificationService.notify("Book returned.");
+            notificationService.bookReturnFailed(checkout.bookId());
+            return false;
         }
     }
 }
