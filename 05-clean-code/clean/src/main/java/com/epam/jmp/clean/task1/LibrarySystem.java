@@ -6,8 +6,8 @@ import java.util.Optional;
 
 
 public class LibrarySystem {
-    private final BookRegistry bookRegistry;
-    private final NotificationService notificationService;
+    protected final BookRegistry bookRegistry;
+    protected final NotificationService notificationService;
 
     public LibrarySystem(BookRegistry bookRegistry, NotificationService notificationService) {
         this.bookRegistry = bookRegistry;
