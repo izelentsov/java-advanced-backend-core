@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.epam.jmp'
+version = '0.0.1-SNAPSHOT'
+description = 'Java Advanced - Module 5 - Clean Code'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.mockito:mockito-core:5.17.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.12.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.12.2'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
