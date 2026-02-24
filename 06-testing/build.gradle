@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+
+ext {
+    set('junitVersion', "5.12.2")
+    set('assertJVersion', "3.27.7")
+}
+
+
+group = 'com.epam.jmp'
+version = '0.0.1-SNAPSHOT'
+description = 'Java Advanced - Module 6 - Testing'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform("org.junit:junit-bom:${junitVersion}")
+    testImplementation platform("org.assertj:assertj-bom:${assertJVersion}")
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.assertj:assertj-core'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
